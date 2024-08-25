@@ -121,6 +121,7 @@ function update(){
 
         if(bird.y > gameBoard.height){
             gameOver = true ;
+            overSound.play() ;
         }
 
         if(!myPipe.passed && bird.x > myPipe.x+myPipe.width){
