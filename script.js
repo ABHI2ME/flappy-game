@@ -24,7 +24,7 @@ bird = {
 //movements 
 let velocityX = -2 ;
 let velocityY = 0 ;
-let gravity = 0.2 ;
+let gravity = 0.18 ;
 
 
 //pipe
@@ -48,29 +48,53 @@ window.onload = function(){
     
 
     context = gameBoard.getContext("2d") ;
+
+    const startbtn = document.createElement('button') ;
+    startbtn.setAttribute('class' , 'start-btn') ;
+    startbtn.innerHTML = "Start" ;
+    const instructions = document.createElement('div') ; 
+    instructions.setAttribute('class' , 'instructions') ;
+    instructions.innerHTML = " press space-bar or upper key &#8593 to jump" ; 
+    container.appendChild(startbtn) ;
+    container.appendChild(instructions) ;
+    startbtn.addEventListener('click' , ()=>{
+        gameStarted() ;                      
+    }) ;
     
 
-    // context.fillStyle = "green" ;
-    // context.fillRect(bird.x , bird.y , bird.width , bird.height) ;
+    function gameStarted(){
+        container.removeChild(startbtn) ;
+        container.removeChild(instructions) ;
+        birdImg = new Image() ;
+            birdImg.src = "images/flappybird.png" ;
+            birdImg.onload = function(){
+            birdImg.width = bird.width ;
+            birdImg.height = bird.height ;
+            startSound.play() ;
+            context.drawImage(birdImg , bird.x , bird.y , bird.width , bird.height) ;
+            }
+        // user will press key start moving bird at start of game
+        document.onkeydown = function(){
+      
+        topPipeImg = new Image() ;
+        topPipeImg.src = "images/toppipe.png" ;
+        bottomPipeImg = new Image() ;
+        bottomPipeImg.src = "images/bottompipe.png" ;
+     
+        
+        requestAnimationFrame(update) ;
+        setInterval(placePipes , 1500) ;
+        document.addEventListener("keydown" , moveBird) ;
+        document.addEventListener("click" , moveBird) ;
+        document.addEventListener("touchstart" , moveBird) ;
+        document.onkeydown = moveBird;
+        
+        }
+        
+        
 
-    birdImg = new Image() ;
-    birdImg.src = "images/flappybird.png" ;
-    birdImg.onload = function(){
-        birdImg.width = bird.width ;
-        birdImg.height = bird.height ;
-        startSound.play() ;
-        context.drawImage(birdImg , bird.x , bird.y , bird.width , bird.height) ;
     }
 
-    topPipeImg = new Image() ;
-    topPipeImg.src = "images/toppipe.png" ;
-    bottomPipeImg = new Image() ;
-    bottomPipeImg.src = "images/bottompipe.png" ;
- 
-    
-    requestAnimationFrame(update) ;
-    setInterval(placePipes , 1500) ;
-    document.addEventListener("keydown" , moveBird) ;
     
 }
 
@@ -91,7 +115,7 @@ function Retry(){
         btn.addEventListener('click'  , ()=>{
             location.reload(); 
         })
-    } , 3500) ;
+    } , 1600) ;
 
 }
 
@@ -129,9 +153,7 @@ function update(){
             score += 0.5 ;
         }
     }
-    // if(pipesArray.length > 2){
-    //     pipesArray.pop ;
-    // }
+    pipesArray = pipesArray.filter(pipe => pipe.x + pipe.width > 0);
     
 
     context.font = "25px Arial" ; 
@@ -146,8 +168,8 @@ function placePipes(){
     if(gameOver){
         return ;
     }
-    let randomPipeY =  pipey - pipeHeight/4 - Math.random()*(pipeHeight/2) ;
-    let opening = pipeHeight/4 ;
+    let randomPipeY =  pipey - pipeHeight/4 - Math.random()*(pipeHeight/2)+10 ;
+    let opening =(pipeHeight/4)+15;
     let topPipes ={
         img : topPipeImg  , 
         width : pipeWidth ,
@@ -172,9 +194,15 @@ function placePipes(){
 }
 
 function moveBird(e){
-     if(e.code == "Space" || e.code == "ArrowUp"){
-        velocityY = -3 ; 
-     }
+    if(e.type === "keydown"){
+        if(e.code === "Space" || e.code === "ArrowUp" || e.code === "keyX"){
+            velocityY = -2.8 ; 
+         }
+    }
+    else if(e.code === "click" || e.start === "touchstart"){
+            velocityY = -2.8 ; 
+    }
+     
       
 }
 
