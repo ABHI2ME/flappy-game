@@ -54,7 +54,7 @@ window.onload = function(){
     // context.fillRect(bird.x , bird.y , bird.width , bird.height) ;
 
     birdImg = new Image() ;
-    birdImg.src = "Images/flappybird.png" ;
+    birdImg.src = "images/flappybird.png" ;
     birdImg.onload = function(){
         birdImg.width = bird.width ;
         birdImg.height = bird.height ;
@@ -63,9 +63,9 @@ window.onload = function(){
     }
 
     topPipeImg = new Image() ;
-    topPipeImg.src = "Images/toppipe.png" ;
+    topPipeImg.src = "images/toppipe.png" ;
     bottomPipeImg = new Image() ;
-    bottomPipeImg.src = "Images/bottompipe.png" ;
+    bottomPipeImg.src = "images/bottompipe.png" ;
  
     
     requestAnimationFrame(update) ;
